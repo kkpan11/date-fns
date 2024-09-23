@@ -8,19 +8,33 @@ This change log follows the format documented in [Keep a CHANGELOG].
 [semantic versioning]: http://semver.org/
 [keep a changelog]: http://keepachangelog.com/
 
-## v4.0.0 - 2024-09-??
+## v4.1.0 - 2024-09-17
+
+This release adds time zone support to format functions (that I somehow missed when working on the feature) and fixes a few bugs.
+
+Make sure also upgrade `TZDate` to v1.0.2 as it [includes a bunch of critical bug fixes](https://github.com/date-fns/tz/blob/main/CHANGELOG.md#v102---2024-09-14).
+
+### Fixed
+
+- Fixed internal `constructFrom` throwing an exception on `null` arguments. While `null` isn't allowed, the functions should rather return `Invalid Date` or `NaN` in such cases. See [#3885](https://github.com/date-fns/date-fns/issues/3885).
+
+### Added
+
+- Added missing time zone support to `format`, `formatISO`, `formatISO9075`, `formatRelative` and `formatRFC3339`. See [#3886](https://github.com/date-fns/date-fns/issues/3886).
+
+## v4.0.0 - 2024-09-16
 
 I have great news! First, ten years after its release, date-fns finally gets first-class time zone support.
 
 Another great news is that there aren't many breaking changes in this release. All of them are type-related and will affect only those explicitly using internal date-fns types. Finally, it has been less than a year since the last major release, which is an improvement over the previous four years between v2 and v3. I plan on keeping the pace and minimizing breaking changes moving forward.
 
-[Read more about the release in the announcement blog post](#TODO).
+[Read more about the release in the announcement blog post](https://blog.date-fns.org/v40-with-time-zone-support/).
 
 \- [Sasha @kossnocorp](https://twitter.com/kossnocorp)
 
 ### Added
 
-- Added time zones support via [@date-fns/tz](https://github.com/date-fns/tz)'s `TZDate` class and `tz` helper function. See its [README](https://github.com/date-fns/tz) for the details about the API.
+- Added time zones support via [`@date-fns/tz`](https://github.com/date-fns/tz)'s `TZDate` class and `tz` helper function. See its [README](https://github.com/date-fns/tz) for the details about the API.
 
 - All relevant functions now accept the context `in` option, which allows to specify the time zone to make the calculations in. If the function also returns a date, it will be in the specified time zone:
 
@@ -51,6 +65,12 @@ Another great news is that there aren't many breaking changes in this release. A
   ```
 
 - **BREAKING**: This release contains a bunch of types changes that should not affect the library's expected usage. The changes are primarily internal and nuanced, so rather than listing them here, I recommend you running the type checker after the upgrade. If there are unfixable problems, please [open an issue](https://github.com/date-fns/date-fns/issues/new).
+
+- **BREAKING**: The package now is ESM-first. The CommonJS is still support and It should not affect most users, but it might break in certains environments. If you encounter any issues, please [report them](https://github.com/date-fns/date-fns/issues/new).
+
+### Fixed
+
+- Fixed CDN build compatibility with jQuery and other tools that expose `$` by properly wrapping the code in an IIFE.
 
 ## v3.6.0 - 2024-03-18
 
